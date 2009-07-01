@@ -1,0 +1,56 @@
+<package>
+<description brief="The Open Source Object-Oriented Graphics Rendering Engine">
+
+OGRE (Object-Oriented Graphics Rendering Engine) is a scene-oriented, flexible 3D engine written in C++ designed to make it easier and more intuitive for developers to produce applications utilising hardware-accelerated 3D graphics. The class library abstracts all the details of using the underlying system libraries like Direct3D and OpenGL and provides an interface based on world objects and other intuitive classes.
+
+</description>
+<author> Steve 'sinbad' Streeting, Justin Walsh, Brian Johnstone and more.</author>
+<license>LGPL</license>
+<review status="3rdparty" notes=""/>
+<url>http://ogre3d.org</url>
+<depend package="freeimage"/>
+<depend package="Cg"/>
+<export>
+  <cpp lflags="-Wl,-rpath,${prefix}/ogre/lib -L${prefix}/ogre/lib/OGRE `PKG_CONFIG_PATH=${prefix}/ogre/lib/pkgconfig:$PKG_CONFIG_PATH pkg-config --libs OGRE`" cflags="`PKG_CONFIG_PATH=${prefix}/ogre/lib/pkgconfig:$PKG_CONFIG_PATH pkg-config --cflags OGRE`"/>
+    <!-- The usage of -dylib_file is a workaround for a bug in Apple's
+    installation of libGL.dylib, as explained here:
+      http://developer.apple.com/qa/qa2007/qa1567.html
+    -->
+  <cpp os="osx" lflags="-framework Ogre -framework Carbon -dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib " cflags=""/>
+        <doxymaker external="http://ogre3d.org"/>
+</export>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libzzip-0-13"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libzzip-dev"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libxaw7"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libxaw7-dev"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libgl1-mesa-dev"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libglu1-mesa-dev"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libgtk2.0-dev"/>
+<sysdepend os="ubuntu" version="9.04-jaunty" package="libxxf86vm-dev"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libzzip-0-13"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libzzip-dev"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libxaw7"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libxaw7-dev"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libgl1-mesa-dev"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libglu1-mesa-dev"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libgtk2.0-dev"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libxxf86vm-dev"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libzzip-dev"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libxaw7"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libxaw7-dev"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libgl1-mesa-dev"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libglu1-mesa-dev"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libgtk2.0-dev"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="libxxf86vm-dev"/>
+<sysdepend os="ubuntu" version="7.04-feisty" package="wget"/>
+<sysdepend os="ubuntu" version="8.10-intrepid" package="wget"/>
+<sysdepend os="ubuntu" version="8.04-hardy" package="wget"/>
+
+<sysdepend os="ubuntu" version="8.10-intrepid" package="libogre-dev"/>
+<rosdep name="zziplib"/>
+<rosdep name="libxaw"/>
+<rosdep name="opengl"/>
+<rosdep name="libxxf86vm"/>
+<rosdep name="gtk2"/>
+</package>
+
