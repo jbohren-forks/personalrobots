@@ -1,0 +1,21 @@
+<package>
+  <description brief="Messages for the navigation stack">
+
+    These messages are the common messages used to interact with the 
+navigation stack.
+
+  </description>
+  <author>Tully Foote</author>
+  <license>BSD</license>
+  <review status="api cleared" notes=""/>
+  <url>http://pr.willowgarage.com/wiki/nav_msgs</url>
+  <depend package="geometry_msgs"/>
+
+  <depend package="rosbagmigration"/>
+  <export>
+    <cpp cflags="-I${prefix}/msg/cpp -I${prefix}/srv/cpp"/>
+    <rosbagmigration rule_file="migration_rules/nav_msgs.bmr"/>
+  </export>
+</package>
+
+
