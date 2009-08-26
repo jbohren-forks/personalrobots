@@ -1,0 +1,68 @@
+/**
+
+\mainpage
+\htmlinclude manifest.html
+
+\b joy ROS joystick drivers for Logitech joysticks and PS3 SIXAXIS/DUALSHOCK devices. Works with Linux, depends in linux/joystick.h.
+
+\section rosapi ROS API
+
+Each node is a joystick driver. All publish joy/Joy messages on topic "joy".
+
+List of nodes:
+- \b joy Used with PR2
+- \b txjoy Should be used in all new applications
+- \b ps3_joy Used for PS3 joysticks 
+
+<hr>
+
+\subsection joy joy
+
+\b joy ROS joystick driver for Logitech Wireless rumblepad joystick. Buttons are labeled on the joystick.
+
+\subsubsection usage Usage
+\verbatim
+$ joy [standard ROS args]
+\endverbatim
+
+\subsubsection topic ROS topics
+
+Subscribes to (name / type):
+- None
+
+Publishes to (name / type):
+- \b "joy/Joy" : Joystick output. Axes are [-1, 1], buttons are 0 or 1 (depressed).
+
+\subsubsection parameters ROS parameters
+- \b "~dev" : Input device for joystick, default /dev/input/js0
+- \b "~deadzone" : Output is zero for axis in deadzone, devault 2000
+
+<hr>
+
+\subsection txjoy txjoy
+
+\b txjoy ROS joystick driver for Logitech Wireless rumblepad joystick. Uses ROS 0.6 API, should be used in all new applications.
+
+\subsubsection usage Usage
+\verbatim
+$ txjoy [standard ROS args]
+\endverbatim
+
+
+\subsubsection topic ROS topics
+
+Subscribes to (name / type):
+- None
+
+Publishes to (name / type):
+- \b "joy/Joy" : Joystick output. Axes are [-1, 1], buttons are 0 or 1 (depressed).
+
+\subsubsection parameters ROS parameters
+- \b "~dev" : Input device for joystick, default /dev/input/js0
+- \b "~deadzone" : Output is zero for axis in deadzone, devault 2000
+
+<hr>
+
+
+
+*/
