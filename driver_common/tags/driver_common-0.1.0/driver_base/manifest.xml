@@ -1,0 +1,15 @@
+<package>
+  <description>A framework for writing drivers that helps with runtime reconfiguration, diagnostics and self-test.</description>
+  <author>Blaise Gassend</author>
+  <license>BSD</license>
+  <review status="unreviewed"/>
+  <depend package="roscpp" />
+  <depend package="self_test" />
+  <depend package="diagnostic_updater" />
+  <depend package="dynamic_reconfigure" />
+  <export>
+    <cpp cflags="-I${prefix}/include"/>
+  </export>
+  <url>http://www.ros.org/wiki/driver_base</url>
+</package>
+
