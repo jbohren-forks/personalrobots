@@ -1,0 +1,13 @@
+<package>
+  <description>
+    A ROS package which is mainly just a wrapper of the outstanding sicktoolbox
+    library for interfacing with the SICK LMS2xx lasers.
+  </description>
+  <author>Morgan Quigley</author>
+  <url>www.ros.org/wiki/sicktoolbox_wrapper</url>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <depend package="sicktoolbox"/>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+</package>
