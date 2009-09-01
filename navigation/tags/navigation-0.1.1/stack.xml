@@ -1,0 +1,18 @@
+<stack name="navigation" version="0.1.0">
+  <description brief="planar navigation stack">
+    The 2D navigation stack
+  </description>
+  <author>Eitan eitan@willowgarage.com</author>
+  <license>BSD, LGPL (amcl)</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/navigation</url>
+  
+
+  <depend stack="geometry"/> 
+  <depend stack="ros"/> 
+  <depend stack="visualization_common"/> 
+  <depend stack="common"/> 
+  <depend stack="common_msgs"/> 
+  <depend stack="laser_pipeline"/> 
+
+</stack>
