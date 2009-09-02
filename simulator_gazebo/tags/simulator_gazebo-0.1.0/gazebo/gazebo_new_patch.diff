@@ -1,0 +1,211 @@
+Index: cmake/SearchForStuff.cmake
+===================================================================
+--- cmake/SearchForStuff.cmake	(revision 8232)
++++ cmake/SearchForStuff.cmake	(working copy)
+@@ -136,7 +136,7 @@
+     SET (HAVE_FFMPEG TRUE)
+   ENDIF (AVF_FOUND AND AVC_FOUND)
+ 
+-  pkg_check_modules(PLAYER playercore>=3.0)
++  pkg_check_modules(PLAYER playercore>=2.2)
+   IF (NOT PLAYER_FOUND)
+     SET (INCLUDE_PLAYER OFF CACHE BOOL "Build gazebo plugin for player" FORCE)
+     MESSAGE (STATUS "Warning: Player not found. The gazebo plugin for player will not be built. See the following website: http://playerstage.sourceforge.net")
+Index: libgazebo/Client.cc
+===================================================================
+--- libgazebo/Client.cc	(revision 8232)
++++ libgazebo/Client.cc	(working copy)
+@@ -128,7 +128,7 @@
+ 
+     this->filename = stream.str();
+ 
+-    std::cout << "opening " << this->filename << "\n";
++    //std::cout << "opening " << this->filename << "\n";
+ 
+     // Connect to gazebo::SimulationIface and check for changing realTime,
+     // if simulationIface->data->realTime is not changing, the server might
+Index: libgazebo/Iface.cc
+===================================================================
+--- libgazebo/Iface.cc	(revision 8232)
++++ libgazebo/Iface.cc	(working copy)
+@@ -313,14 +313,12 @@
+   std::ios_base::fmtflags origFlags = std::cout.flags();
+ 
+   // Print the name, version info
+-  std::cout << "opening " << this->filename.c_str() << " "
++  // std::cout << "opening " << this->filename.c_str() << " "
++  //<< std::setiosflags(std::ios::hex | std::ios::showbase)
++  //<< std::setw(3) << ((GazeboData*) this->mMap)->version << " "
++  //<< std::setiosflags(std::ios::dec | ~std::ios::showbase)
++  //<< ((GazeboData*) this->mMap)->size << "\n";
+ 
+-  << std::setiosflags(std::ios::hex | std::ios::showbase)
+-  << std::setw(3) << ((GazeboData*) this->mMap)->version << " "
+-
+-  << std::setiosflags(std::ios::dec | ~std::ios::showbase)
+-  << ((GazeboData*) this->mMap)->size << "\n";
+-
+   std::cout.setf(origFlags);
+ 
+   this->Lock(1);
+Index: libgazebo/bindings/ruby/CMakeLists.txt
+===================================================================
+--- libgazebo/bindings/ruby/CMakeLists.txt	(revision 8232)
++++ libgazebo/bindings/ruby/CMakeLists.txt	(working copy)
+@@ -2,6 +2,8 @@
+ 
+ if(RUBY_LIBRARY AND RUBY_INCLUDE_PATH)
+     SET(RUBY_FOUND TRUE)
++    MESSAGE (STATUS "Found Ruby libraries: ${RUBY_LIBRARY}")
++    MESSAGE (STATUS "Found Ruby includes: ${RUBY_INCLUDE_PATH}")
+ endif (RUBY_LIBRARY AND RUBY_INCLUDE_PATH)
+ 
+   IF(RUBY_FOUND)
+Index: server/rendering/OgreHeightmap.cc
+===================================================================
+--- server/rendering/OgreHeightmap.cc	(revision 8232)
++++ server/rendering/OgreHeightmap.cc	(working copy)
+@@ -108,6 +108,11 @@
+   float nf = (float)(log(terrainVertSize-1)/log(2));
+   int ni = (int)(log(terrainVertSize-1)/log(2));
+ 
++  //std::cout << "debug: imageFilename " << imageFilename << std::endl;
++  //std::cout << "debug: nf " << nf << std::endl;
++  //std::cout << "debug: ni " << ni << std::endl;
++  //std::cout << "debug: terrainVertSize " << terrainVertSize << std::endl;
++
+   // Make sure the heightmap image size is (2^n)+1 in size
+   if ( nf - ni != 0)
+   {
+Index: server/rendering/CMakeLists.txt
+===================================================================
+--- server/rendering/CMakeLists.txt	(revision 8232)
++++ server/rendering/CMakeLists.txt	(working copy)
+@@ -1,5 +1,3 @@
+-include (${gazebo_cmake_dir}/GazeboUtils.cmake)
+-
+ SET (sources OgreMovableText.cc
+              OgreCreator.cc
+              OgreAdaptor.cc
+Index: server/gui/GLWindow.hh
+===================================================================
+--- server/gui/GLWindow.hh	(revision 8232)
++++ server/gui/GLWindow.hh	(working copy)
+@@ -157,6 +157,12 @@
+     private: OgreCamera *activeCamera;
+ 
+     private: static GLWindow *activeWin;
++
++    /// gui interface, prerequisite to selecting Model / Body
++    ///   press control+left click Model to toggle select
++    ///   press alt+control+left click Body to toggle select
++    private: bool controlKeyPressed;
++    private: bool altKeyPressed;
+   };
+ 
+ }
+Index: server/gui/GLWindow.cc
+===================================================================
+--- server/gui/GLWindow.cc	(revision 8232)
++++ server/gui/GLWindow.cc	(working copy)
+@@ -75,6 +75,8 @@
+   this->leftMousePressed = false;
+   this->rightMousePressed = false;
+   this->middleMousePressed = false;
++  this->controlKeyPressed = false;
++  this->altKeyPressed = false;
+ 
+ 
+   this->keys.clear();
+@@ -229,7 +231,7 @@
+       break;
+   }
+ 
+-  if (!this->mouseDrag)
++  if (!this->mouseDrag && this->controlKeyPressed)
+   {
+     Entity *entity = OgreAdaptor::Instance()->GetEntityAt(this->activeCamera, 
+                                                           this->mousePos);
+@@ -544,7 +546,15 @@
+         case FL_Control_L:
+         case FL_Control_R:
+           moveAmount = this->moveAmount * 10;
++          this->controlKeyPressed = true;
++          //std::cout << "press control" << std::endl;
+           break;
++
++        case FL_Alt_L:
++        case FL_Alt_R:
++          this->altKeyPressed = true;
++          //std::cout << "press alt" << std::endl;
++          break;
+       }
+     }
+   }
+@@ -614,6 +624,17 @@
+           this->directionVec.z -= this->moveAmount;
+           break;
+ 
++        case XK_Control_L:
++        case XK_Control_R:
++          this->controlKeyPressed = true;
++          break;
++
++        case XK_Alt_L:
++        case XK_Alt_R:
++          this->altKeyPressed = true;
++          std::cout << "pressing alt" << std::endl;
++          break;
++
+         default:
+           break;
+       }
+@@ -641,7 +662,20 @@
+     case ']':
+       CameraManager::Instance()->DecActiveCamera();
+       break;
++
++    case FL_Control_L:
++    case FL_Control_R:
++      this->controlKeyPressed = false;
++      //std::cout << "releasing control" << std::endl;
++      break;
++
++    case FL_Alt_L:
++    case FL_Alt_R:
++      this->altKeyPressed = false;
++      //std::cout << "releasing alt" << std::endl;
++      break;
+   }
++
+ }
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+Index: server/Model.cc
+===================================================================
+--- server/Model.cc	(revision 8232)
++++ server/Model.cc	(working copy)
+@@ -259,8 +259,8 @@
+ 
+ 
+   //global fiducial and retro id
+-  this->SetLaserFiducialId(**this->laserFiducialP);
+-  this->SetLaserRetro(**this->laserRetroP);
++  //this->SetLaserFiducialId(**this->laserFiducialP);
++  //this->SetLaserRetro(**this->laserRetroP);
+ 
+ 
+   // Create the graphics iface handler
+Index: CMakeLists.txt
+===================================================================
+--- CMakeLists.txt	(revision 8232)
++++ CMakeLists.txt	(working copy)
+@@ -34,7 +34,7 @@
+ SET (OGRE_VERSION 1.6.1 CACHE INTERNAL "Ogre version requirement" FORCE)
+ 
+ SET (FREEIMAGE_MAJOR_VERSION 3 CACHE INTERNAL "FreeImage major version requirement" FORCE)
+-SET (FREEIMAGE_MINOR_VERSION 10 CACHE INTERNAL "FreeImage minor version requirement" FORCE)
++SET (FREEIMAGE_MINOR_VERSION 9 CACHE INTERNAL "FreeImage minor version requirement" FORCE)
+ SET (FREEIMAGE_VERSION ${FREEIMAGE_MAJOR_VERSION}.${FREEIMAGE_MINOR_VERSION}.0 CACHE INTERNAL "FreeImage version requirement" FORCE)
+ SET (ODE_VERSION 0.10.1 CACHE INTERNAL "ODE version requirement" FORCE)
+ SET (MIN_BOOST_VERSION 1.35.0 CACHE INTERNAL "Boost min version requirement" FORCE)
