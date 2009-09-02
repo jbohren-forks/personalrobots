@@ -1,0 +1,18 @@
+<stack name="simulator_gazebo" version="0.1">
+  <description brief="Gazebo Simulators">
+    Simulator for using ROS with Gazebo
+  </description>
+  <author>Maintained by John Hsu johnhsu@willowgarage.com</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/simulator_gazebo</url>
+  
+
+  <depend stack="geometry"/> <!-- bullet, tf --> 
+  <depend stack="ros"/> <!-- roscpp, std_msgs --> 
+  <depend stack="visualization_common"/> <!-- ogre, ogre_tools --> 
+  <depend stack="common_msgs"/> <!-- sensor_msgs --> 
+  <depend stack="common"/> <!-- sensor_msgs --> 
+  <depend stack="robot_model"/> <!-- sensor_msgs, ivcon, convex_decomposition --> 
+
+</stack>
