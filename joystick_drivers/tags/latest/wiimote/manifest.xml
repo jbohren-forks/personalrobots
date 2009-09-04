@@ -1,0 +1,27 @@
+<package>
+  <description brief="wiimote">
+     Python encapsulation of Wiimote+ functions.
+     Publishes:
+       - Accelerator reading (~100hz)
+       - Gyro reading (~100hz)
+     Listens to status requests:
+       - LED1_Status ... LED4_Status
+       - Rumble_Status
+       - Battery_Status
+     Commands:
+       - set_LED1(0/1)
+       - set_LED2(0/1)
+       - set_LED3(0/1)
+       - set_LED4(0/1)
+       - set_Rumble(0/1)
+  </description>
+  <author>Andreas Paepcke</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://pr.willowgarage.com/wiki/wiimote</url>
+  <depend package="rospy"/>
+  <depend package="std_msgs"/>
+
+</package>
+
+
